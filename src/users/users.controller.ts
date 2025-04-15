@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './users.schema';
-import { CreateUserDto, UpdatePointsDto } from './users.dto';
+import { CreateUserDto, LinkEmailDto, UpdatePointsDto } from './users.dto';
 
 @Controller('users')
 export class UsersController {
@@ -21,7 +21,17 @@ export class UsersController {
 
   @Put('/update-points')
   async updatePoints(@Body() body: UpdatePointsDto) {
-    this.userService.updatePoints(body);
-    return;
+    return this.userService.updatePoints(body);
+  }
+
+  @Put('/link-email')
+  async linkEmail(@Body() body: LinkEmailDto) {
+    await this.userService.linkEmail(body);
+    return 'Email linked successfully';
+  }
+
+  @Get('/email/:email')
+  async findByEmail(@Param('email') email: string) {
+    return this.userService.findUserByEmail(email);
   }
 }

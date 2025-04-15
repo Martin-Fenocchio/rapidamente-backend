@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -6,6 +6,11 @@ export class CreateUserDto {
 
   @IsNumber()
   points: number;
+
+  @IsOptional()
+  @IsString()
+  @IsEmail()
+  email: string;
 }
 
 export class UpdatePointsDto {
@@ -14,4 +19,20 @@ export class UpdatePointsDto {
 
   @IsNumber()
   points: number;
+
+  @IsOptional()
+  @IsString()
+  history: string;
+}
+export class LinkEmailDto {
+  @IsString()
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  userId: string;
+
+  @IsOptional()
+  @IsString()
+  history: string;
 }
