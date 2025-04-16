@@ -30,12 +30,7 @@ export class UsersService {
   }
 
   async updatePoints(payload: UpdatePointsDto) {
-    console.log('payload updatePoints', JSON.stringify(payload));
-
     const user = await this.userModel.findById(payload.id);
-
-    console.log('USER', JSON.stringify(user));
-
     user.points = payload.points;
 
     if (payload.history) {
