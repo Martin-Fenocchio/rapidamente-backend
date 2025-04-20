@@ -48,8 +48,6 @@ export class UsersService {
   }
 
   async linkEmail(payload: { email: string; userId: string; history: string }) {
-    console.log('linkEmail', JSON.stringify(payload));
-
     const user = await this.userModel.findById(payload.userId);
 
     if (!user) {
