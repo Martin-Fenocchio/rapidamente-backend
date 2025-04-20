@@ -27,7 +27,7 @@ export class UsersService {
   }
 
   async findAllUsers(): Promise<User[]> {
-    return this.userModel.find().exec();
+    return this.userModel.find({}, { history: 0 }).exec();
   }
 
   async updatePoints(payload: UpdatePointsDto) {
