@@ -1,7 +1,7 @@
 export const mergeHistories = (historyA: string, historyB: string): string => {
-  const originalHistory = JSON.parse(historyA);
+  const originalHistory = JSON.parse(historyA ?? '[]');
 
-  const newHistory = JSON.parse(historyB);
+  const newHistory = JSON.parse(historyB ?? '[]');
 
   const originalDates = originalHistory.map((point) => point.date);
 
