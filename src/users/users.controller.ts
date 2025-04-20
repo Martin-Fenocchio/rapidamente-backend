@@ -26,8 +26,7 @@ export class UsersController {
 
   @Put('/link-email')
   async linkEmail(@Body() body: LinkEmailDto) {
-    await this.userService.linkEmail(body);
-    return 'Email linked successfully';
+    return await this.userService.linkEmail(body);
   }
 
   @Get('/email/:email')

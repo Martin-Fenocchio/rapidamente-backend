@@ -11,16 +11,17 @@ export class UsersService {
 
   async createUser(payload: CreateUserDto): Promise<User> {
     if (payload.email) {
-      const userWithEmail = await this.findUserByEmail(payload.email);
+      const userWithEmail = await this.findUserByEmail(payload.email, true);
 
       if (userWithEmail) return userWithEmail;
     }
+    let userName = payload.name;
 
     if (await this.findUserByName(payload.name)) {
-      throw new HttpException('NAME_ALREADY_EXISTS', HttpStatus.CONFLICT);
+      userName = `${payload.name}-${Math.floor(Math.random() * 1000)}`;
     }
 
-    const newUser = new this.userModel(payload);
+    const newUser = new this.userModel({ ...payload, name: userName });
 
     return newUser.save();
   }
@@ -57,36 +58,22 @@ export class UsersService {
 
     user.email = payload.email;
 
-    if (user.history) {
-      user.history = mergeHistories(user.history, payload.history);
-    } else {
-      user.history = payload.history;
+    if (payload.history) {
+      if (user.history) {
+        user.history = mergeHistories(user.history, payload.history);
+      } else {
+        user.history = payload.history;
+      }
     }
 
-    await user.save();
+    return await user.save();
   }
 
-  async findUserByEmail(email: string): Promise<User> {
+  async findUserByEmail(email: string, silent?: boolean): Promise<User> {
     const user = await this.userModel.findOne({ email });
-    if (!user) {
+    if (!user && !silent) {
       throw new HttpException('USER_NOT_FOUND', HttpStatus.NOT_FOUND);
     }
     return user;
   }
-
-  /* async signUp(payload: SignUpDto) {
-    if (await this.findUserByName(payload.name)) {
-      throw new HttpException('NAME_ALREADY_EXISTS', HttpStatus.CONFLICT);
-    }
-
-    const user = await this.createUser(payload.name);
-    const scores = payload.history.map((point) => ({
-      ...point,
-      user: user.id,
-    }));
-
-    this.scoresService.createMany(scores);
-
-    return { userID: user.id };
-  } */
 }

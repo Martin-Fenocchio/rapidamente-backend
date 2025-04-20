@@ -3,7 +3,11 @@
 /node_modules
 /build
 /dist
+/test
 
+lambda.zip
+
+/lambda
 # Logs
 logs
 *.log
